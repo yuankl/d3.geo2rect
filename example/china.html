@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+path{
+  fill:transparent;
+  stroke:rgba(0,0,0,1);
+}
+
+/*4,*/
+
+.class-4 circle{
+  fill:red;
+}
+
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+<script src="../build/geo2rect.js"></script>
+<script>
+
+var config = {
+  width : 700,
+  height : 700,
+  padding : 70,
+  projection : d3.geoMercator(),
+  duration : 1000,
+  key:function(d){return d.properties.name; },
+  grid : {
+    新疆:{x:0,y:3},
+    西藏:{x:0,y:6},
+    甘肃:{x:1,y:4},
+    青海:{x:1,y:5},
+    四川:{  x:1, y:6},
+    云南:{ x:1, y:8},
+    内蒙古:{  x:2, y:3},
+    宁夏:{    x:2, y:4},
+    陕西:{  x:2, y:5},
+    重庆:{   x:2, y:6},
+    贵州:{   x:2, y:7},
+    广西:{  x:2, y:8},
+    河北:{    x:3, y:3},
+    山西:{    x:3,y:4},
+    河南:{  x:3,y:5},
+    湖北:{   x:3,y:6},
+    湖南:{   x:3,y:7},
+    广东:{   x:3,y:8},
+    海南:{    x:3,y:10},
+    北京:{  x:4,y:3},
+    山东:{   x:4,y:4},
+    江苏:{  x:4,y:5},
+    安徽:{    x:4,y:6},
+    江西:{    x:4,y:7},
+    澳门:{  x:4,y:8},
+    香港:{ x:4,y:9},
+    辽宁:{  x:5,y:2},
+    天津:{  x:5,y:3},
+    浙江:{   x:5,y:6},
+    福建:{    x:5,y:7},
+    黑龙江:{    x:6,y:0},
+    吉林:{   x:6,y:1},
+    上海:{    x:6,y:6},
+    台湾:{    x:6,y:8},
+  }
+};
+
+var svg = d3.select('body').append('svg').attr('width',config.width).attr('height',config.height);
+
+var g2r = new geo2rect.draw();
+
+d3.json('./data/china.geo.json', function(err, data){
+  var geojson = geo2rect.compute(data);
+
+  g2r.config = config;
+  g2r.data = geojson;
+  g2r.svg = svg.append('g');
+
+  g2r.draw();
+});
+
+d3.select('body').append('a').text('Toggle').on('click', function(){
+  g2r.toggle();
+  g2r.draw();
+  console.log(g2r.mode);
+});
+
+</script>
+</body>
+</html>
